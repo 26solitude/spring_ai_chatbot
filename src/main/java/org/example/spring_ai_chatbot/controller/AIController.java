@@ -31,10 +31,21 @@ public class AIController {
         String userInput = request.get("userInput");
         String aiResponse = prompt.user(userInput).call().content();
 
-        chatMessageRepository.save(new ChatMessage(userId, "user", userInput));
-        chatMessageRepository.save(new ChatMessage(userId, "assistant", aiResponse));
+        // 1) user 입력 저장
+        ChatMessage userMsg = new ChatMessage(userId, "user", userInput);
+        chatMessageRepository.save(userMsg);
 
-        return Map.of("role", "assistant", "content", aiResponse);
+        // 2) assistant 응답 저장
+        ChatMessage assistantMsg = new ChatMessage(userId, "assistant", aiResponse);
+        chatMessageRepository.save(assistantMsg);
+
+        // 3) 결과 반환
+        return Map.of(
+                "role", "assistant",
+                "content", aiResponse,
+                "userTimestamp", String.valueOf(userMsg.getTimestamp()),
+                "assistantTimestamp", String.valueOf(assistantMsg.getTimestamp())
+        );
     }
 }
 
