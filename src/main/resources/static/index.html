@@ -150,24 +150,35 @@
         const message = userInput.value.trim();
         if (!message) return;
 
+        // === Step 1: 날짜 구분선 추가 (사용자 메시지 위에 먼저 추가) ===
+        const now = Date.now();
+        const currentDateString = formatDate(now);
+        if (currentDateString !== lastDisplayedDate) {
+            const dateDivider = document.createElement('div');
+            dateDivider.className = 'date-divider';
+            dateDivider.textContent = currentDateString;
+            chatBox.appendChild(dateDivider);
+            lastDisplayedDate = currentDateString;
+        }
+
+        // === Step 2: 사용자 메시지 추가 (전송 중 상태) ===
         const userMessageContainer = addMessage('user', message, true);
         userInput.value = '';
 
         try {
-
-            // 테스트용 (에러 발생): "error" 입력 시 전송 실패
-            if (message === "error") {
-                throw new Error('전송 실패(테스트)');
-            }
-
             const response = await sendMessageToServer(message);
             const data = await response.json();
+
+            // === Step 3: 전송 성공 후, 사용자 메시지의 "전송 중..."을 시간으로 업데이트 ===
             updateUserMessageContainer(userMessageContainer, data.userTimestamp);
+
+            // === Step 4: 어시스턴트 메시지 추가 ===
             addMessageWithTimestamp('assistant', data.content, data.assistantTimestamp);
         } catch (err) {
             showErrorStatus(userMessageContainer, message);
         }
     }
+
 
     function updateUserMessageContainer(messageContainer, timestamp) {
         const statusSpan = messageContainer.querySelector('.status');
