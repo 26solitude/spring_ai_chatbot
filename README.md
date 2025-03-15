@@ -1,5 +1,5 @@
 # 스프링 AI 챗봇 개인 프로젝트
-<img src="https://github.com/user-attachments/assets/d245d6b7-d202-4434-9456-90d17e6e040a" width="400">
+<img src="https://github.com/user-attachments/assets/fa244f32-f91a-44aa-a228-c17a188f12d5" width="400">
 
 이 프로젝트는 스프링(Spring Boot)과 **Spring AI 프레임워크**를 활용하여 만든 개인용 AI 챗봇 프로젝트입니다. 사용자는 간단한 웹 인터페이스를 통해 챗봇과 상호작용할 수 있으며, AI 모델을 통해 자연스러운 대화를 제공합니다.
 
